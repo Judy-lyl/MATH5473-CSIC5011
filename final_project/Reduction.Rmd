@@ -1,5 +1,5 @@
 ---
-title: "Reduction, visualization and classification"
+title: "Reduction and visualization"
 author: "Liu Yonglin"
 date: "2023-04-09"
 output: html_document
@@ -63,9 +63,6 @@ path<-paste(path,"index-group.csv",sep = "/")
 ig <- read.csv(path, header=TRUE)
 ```
 
-
-
-
 ```{r}
 col_names <- colnames(am[,2:10])
 years<- qdt$date
@@ -83,15 +80,12 @@ xxx=abc[1:1728,]
 index <- rep(col_names, each = 192)
 
 bb<- data.frame(years = y, value = xxx, index = index)
-ggplot(data = bb, aes(x=years,  y=value, colour=index)) +geom_line() 
-```
-
+ggplot(data = bb, aes(x=years,  y=value, colour=index)) +geom_line()
 
 all <- data.frame(matrix(ncol = 2, nrow = 0))
-
+```
 
 ### ISOMAP
-
 
 ##Create data frame with 0 rows and 2 columns
 ```{r}
@@ -110,10 +104,9 @@ PC<-rbind(PC,data.frame("x"=X_ISO$dim2.1, "y"=X_ISO$dim2.2))
 ## provide column names
 ```{r}
 colnames(PC)<-c("PC1","PC2")
-```
 
 all <- rbind(all, PC)
-
+```
 
 ## splitting
 ```{r}
@@ -132,7 +125,6 @@ ytest_iso=isotest[,3]
 lr_iso<-multinom(group~PC1+PC2,data=isotrain,maxit=500) #maxit:iteration times
 summary(lr_iso) 
 ```
-
 
 ## Error and accuracy
 ```{r}
@@ -185,12 +177,10 @@ for (i in 1:192){
 write.csv(d2,"isomap-dist-2pc.csv")
 ```
 
-
 ##Create data frame with 0 rows and 4 columns
 ```{r}
 PC <- data.frame(matrix(ncol = 4, nrow = 0))
 ```
-
 
 ## Data reduction and creating new dataframe PC with 4 principle components
 ```{r}
@@ -216,12 +206,10 @@ d2 <- as.data.frame(as.matrix(d2))
 write.csv(d2,"isomap-dist-4pc.csv")
 ```
 
-
 ##Create data frame with 0 rows and 6 columns
 ```{r}
 PC <- data.frame(matrix(ncol = 6, nrow = 0))
 ```
-
 
 ## Data reduction and creating new dataframe PC with 6 principle components
 ```{r}
@@ -237,7 +225,7 @@ PC<-rbind(PC,data.frame("1"=X_ISO$dim6.1, "2"=X_ISO$dim6.2, "3"=X_ISO$dim6.3, "4
 colnames(PC)<-c("PC1","PC2","PC3","PC4","PC5","PC6")
 ```
 
-## Save-pc4
+## Save-pc6
 ```{r}
 write.csv(PC,"isomap-6pc.csv")
 
@@ -247,10 +235,7 @@ d2 <- as.data.frame(as.matrix(d2))
 write.csv(d2,"isomap-dist-6pc.csv")
 ```
 
-
 ### LLE
-
-
 
 ##Create data frame with 0 rows and 2 columns
 ```{r}
@@ -268,21 +253,21 @@ PC<-rbind(PC,data.frame("x"=X_LLE$V1, "y"=X_LLE$V2))
 ##provide column names
 ```{r}
 colnames(PC)<-c("PC1","PC2")
-```
 
 all <- rbind(all, PC)
+```
 
 ##Plot
 ```{r}
 ggplot(data = PC,aes(x=PC1, y = PC2, col=factor(group)))+geom_point(color="darkorange",size=2.5)+ coord_cartesian(xlim=c(-2,2),ylim=c(-1.7,3))+ labs(title = "LLE") + theme(plot.title = element_text(hjust = 0.5))
 ```
+
 ## Plot2
 ```{r}
 rr=ig$group
 PC$"group"<-rr[1:192]
 ggplot(data = PC,aes(  x= PC1, y = PC2,col=group) ) + geom_point() + coord_cartesian(xlim=c(-2,2),ylim=c(-1.7,3))+ labs(title = "LLE") + theme(plot.title = element_text(hjust = 0.5))
 ```
-
 
 ## splitting
 ```{r}
@@ -400,8 +385,6 @@ write.csv(d2,"lle-dist-6pc.csv")
 
 ### MDS
 
-
-
 ## create data frame with 0 rows and 2 columns
 ```{r}
 PC <- data.frame(matrix(ncol = 2, nrow = 0))
@@ -421,10 +404,9 @@ PC<-rbind(PC,data.frame(X_MDS$V1, X_MDS$V2))
 ## provide column names
 ```{r}
 colnames(PC)<-c("PC1","PC2")
-```
-
 
 all <- rbind(all, PC)
+```
 
 ## Plot
 ```{r}
@@ -518,7 +500,6 @@ write.csv(d2,"mds-dist-4pc.csv")
 
 ```
 
-
 ## create data frame with 0 rows and 6 columns
 ```{r}
 PC <- data.frame(matrix(ncol = 6, nrow = 0))
@@ -539,6 +520,7 @@ PC<-rbind(PC,data.frame(X_MDS$V1, X_MDS$V2, X_MDS$V3, X_MDS$V4, X_MDS$V5, X_MDS$
 ```{r}
 colnames(PC)<-c("PC1","PC2","PC3","PC4","PC5","PC6")
 ```
+
 ## Save
 ```{r}
 write.csv(PC,"mds-6pc.csv")
@@ -551,10 +533,7 @@ write.csv(d2,"mds-dist-6pc.csv")
 
 ```
 
-
 ### TSNE
-
-
 
 ## create data frame with 0 rows and 2 columns
 ```{r}
@@ -576,9 +555,9 @@ PC<-rbind(PC,data.frame("x"=X_tSNE$V1, "y"=X_tSNE$V2))
 ##provide column names
 ```{r}
 colnames(PC)<-c("PC1","PC2")
-```
 
 all <- rbind(all, PC)
+```
 
 ##Plot
 ```{r}
@@ -659,8 +638,6 @@ PC<-rbind(PC,data.frame("x"=X_tSNE$V1, "y"=X_tSNE$V2))
 
 ### rPCA
 
-
-
 ## create data frame with 0 rows and 2 columns
 ```{r}
 PC <- data.frame(matrix(ncol = 2, nrow = 0))
@@ -676,16 +653,14 @@ X_rpca = X_rpca$loadings
 X_rpca=as.data.frame(X_rpca)
 
 PC<-rbind(PC,data.frame("x"=X_rpca$PC1, "y"=X_rpca$PC2))
-  
-
 ```
 
 ## provide column names
 ```{r}
 colnames(PC)<-c("PC1","PC2")
-```
 
 all <- rbind(all, PC)
+```
 
 ## Plot
 ```{r}
@@ -755,8 +730,6 @@ for (i in 1:192){
 write.csv(d2,"rpca-dist-2pc.csv")
 ```
 
-
-
 ## create data frame with 0 rows and 4 columns
 ```{r}
 PC <- data.frame(matrix(ncol = 4, nrow = 0))
@@ -790,7 +763,6 @@ d2 <- dist(PC)
 d2 <- as.data.frame(as.matrix(d2))
 
 write.csv(d2,"rpca-dist-4pc.csv")
-
 ```
 
 ## create data frame with 0 rows and 6 columns
@@ -808,8 +780,6 @@ X_rpca = X_rpca$loadings
 X_rpca=as.data.frame(X_rpca)
 
 PC<-rbind(PC,data.frame(X_rpca$PC1, X_rpca$PC2, X_rpca$PC3, X_rpca$PC4, X_rpca$PC5, X_rpca$PC6))
-  
-
 ```
 
 ## provide column names
@@ -826,11 +796,9 @@ d2 <- dist(PC)
 d2 <- as.data.frame(as.matrix(d2))
 
 write.csv(d2,"rpca-dist-6pc.csv")
-
 ```
+
 ### sPCA
-
-
 
 #create data frame with 0 rows and 2 columns
 ```{r}
@@ -853,20 +821,22 @@ PC<-rbind(PC,data.frame("x"=X_spca$V1, "y"=X_spca$V2))
 ## provide column names
 ```{r}
 colnames(PC)<-c("PC1","PC2")
-```
 
 all <- rbind(all, PC)
+```
 
 ## Plot
 ```{r}
 ggplot(data = PC,aes(x=PC1, y = PC2, col=factor(group)))+geom_point(colour="#FF6699",size=2.5)+ coord_cartesian(xlim=c(0,0.17),ylim=c(-0.3,0.15))+ labs(title = "sPCA") + theme(plot.title = element_text(hjust = 0.5))
 ```
+
 ## Plot2
 ```{r}
 rr=ig$group
 PC$"group"<-rr[1:192]
 ggplot(data = PC,aes(  x= PC1, y = PC2,col=group) ) + geom_point()+ coord_cartesian(xlim=c(0,0.17),ylim=c(-0.3,0.15))+ labs(title = "sPCA") + theme(plot.title = element_text(hjust = 0.5))
 ```
+
 ## splitting
 ```{r}
 set.seed(42)
@@ -915,7 +885,6 @@ for (i in 1:192){
 write.csv(d2,"spca-dist-2pc.csv")
 ```
 
-
 ## create data frame with 0 rows and 4 columns
 ```{r}
 PC <- data.frame(matrix(ncol = 4, nrow = 0))
@@ -931,8 +900,6 @@ X_spca = X_spca$loadings
 X_spca=as.data.frame(X_spca)
 
 PC<-rbind(PC,data.frame(X_spca$PC1, X_spca$PC2, X_spca$PC3, X_spca$PC4))
-  
-
 ```
 
 ## provide column names
@@ -949,7 +916,6 @@ d2 <- dist(PC)
 d2 <- as.data.frame(as.matrix(d2))
 
 write.csv(d2,"spca-dist-4pc.csv")
-
 ```
 
 ## create data frame with 0 rows and 6 columns
@@ -967,8 +933,6 @@ X_spca = X_spca$loadings
 X_spca=as.data.frame(X_spca)
 
 PC<-rbind(PC,data.frame(X_spca$PC1, X_spca$PC2, X_spca$PC3, X_spca$PC4, X_spca$PC5, X_spca$PC6))
-  
-
 ```
 
 ## provide column names
@@ -993,20 +957,23 @@ index <- rep(c("ISOMAP","LLE", "MDS", "TSNE", "RPCA", "SPCA"), each = 192)
 all$method <- index
 ```
 
-
+## Plot
 ```{r}
 ggplot(data = all,aes(x=PC1, y = PC2, col=index))+geom_point(size=0.5)
 ```
-
-#Plot
-
+ 
+# Plot MSE line chart in groups after prediction
+```{r}
 library(ggplot2)
 library(scales)
 
 path<-getwd()
 path<-paste(path,"final_mse.csv",sep = "/")
 df <- read.csv(path, header=TRUE)
+```
 
+# GDPC1
+```{r}
 df1 <- df[df$index == "GDPC1", ]
 df11 <- df1[, 2:10]
 df11 <- t(df11)
@@ -1029,18 +996,15 @@ for (i in 1:8){
   t=c(t,q)
 }
 
-
 aa <- data.frame(factor = t, mse = mse3, index = index)
 
 aa$mse <- format(aa[,2], scientific = TRUE)
 
 ggplot(data = aa, aes(x=factor,y=mse,colour=index)  ) + geom_line()
+```
 
-
-
-
-
-
+# INDPRO
+```{r}
 df2 <- df[df$index == "INDPRO", ]
 df22 <- t(df2[, 2:10])
 
@@ -1059,17 +1023,13 @@ for (i in 1:8){
   t=c(t,q)
 }
 
-
 aa <- data.frame(factor = t, mse = mse, index = index)
 
-ggplot(data = aa, aes(x=factor,  y=mse , colour=index)) +geom_point()  
+ggplot(data = aa, aes(x=factor,  y=mse , colour=index)) +geom_point()
+```
 
-
-
-
-
-
-
+# HWIURATIOx
+```{r}
 df2 <- df[df$index == "HWIURATIOx", ]
 df22 <- t(df2[, 2:10])
 
@@ -1088,16 +1048,13 @@ for (i in 1:8){
   t=c(t,q)
 }
 
-
 aa <- data.frame(factor = t, mse = mse3, index = index)
 
-ggplot(data = aa, aes(x=factor,  y=mse , colour=index)) +geom_point()  
+ggplot(data = aa, aes(x=factor,  y=mse , colour=index)) +geom_point() 
+```
 
-
-
-
-
-
+# DFSARG3Q086SBEA
+```{r}
 df2 <- df[df$index == "DFSARG3Q086SBEA", ]
 df22 <- t(df2[, 2:10])
 
@@ -1116,7 +1073,7 @@ for (i in 1:8){
   t=c(t,q)
 }
 
-
 aa <- data.frame(factor = t, mse = mse, index = index)
 
 ggplot(data = aa, aes(x=factor,  y=mse , colour=index)) +geom_point()  
+```
